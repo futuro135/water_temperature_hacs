@@ -1,0 +1,16 @@
+{
+  "domain": "water_temperature",
+  "name": "Water Temperature Uglich",
+  "version": "1.0.0",
+  "documentation": "https://github.com/yourusername/water-temperature-hacs",
+  "issue_tracker": "https://github.com/yourusername/water-temperature-hacs/issues",
+  "dependencies": [],
+  "codeowners": ["@yourusername"],
+  "requirements": [
+    "aiohttp>=3.8.0",
+    "beautifulsoup4>=4.9.3"
+  ],
+  "iot_class": "cloud_polling",
+  "config_flow": true,
+  "integration_type": "device"
+} 
