@@ -6,7 +6,7 @@ import logging
 from typing import Optional, Dict, Any
 from bs4 import BeautifulSoup
 
-from .const import BASE_URL, DEFAULT_LOCATION
+from .const import DEFAULT_URL
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -14,9 +14,9 @@ _LOGGER = logging.getLogger(__name__)
 class WaterTemperatureParser:
     """Parser for water temperature data."""
 
-    def __init__(self):
+    def __init__(self, url: Optional[str] = None):
         """Initialize the parser."""
-        self.url = BASE_URL
+        self.url = url or DEFAULT_URL
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -109,6 +109,9 @@ class WaterTemperatureParser:
             soup = BeautifulSoup(text, 'html.parser')
             text_content = soup.get_text()
             
+            # Try to extract location from page title or content
+            location = self._extract_location(soup, text_content)
+            
             info = {
                 'current_temperature': None,
                 'yesterday_temperature': None,
@@ -116,7 +119,7 @@ class WaterTemperatureParser:
                 'trend': None,
                 'air_temperature': None,
                 'last_updated': None,
-                'location': DEFAULT_LOCATION
+                'location': location
             }
             
             # Current temperature
@@ -153,4 +156,67 @@ class WaterTemperatureParser:
             
         except Exception as e:
             _LOGGER.error("Error parsing detailed info: %s", e)
-            return None 
+            return None
+
+    def _extract_location(self, soup: BeautifulSoup, text_content: str) -> str:
+        """Extract location from page content."""
+        try:
+            # Try to get location from title
+            title = soup.find('title')
+            if title:
+                title_text = title.get_text()
+                # Look for patterns like "Температура воды в Городе"
+                location_match = re.search(r'в\s+([А-Яа-яё\s\-]+?)\s+в', title_text)
+                if location_match:
+                    return location_match.group(1).strip()
+                
+                # Alternative pattern
+                location_match = re.search(r'Температура.*?в\s+([А-Яа-яё\s\-]+)', title_text)
+                if location_match:
+                    city = location_match.group(1).strip()
+                    # Clean up common suffixes
+                    city = re.sub(r'\s+(в\s+.*|сегодня|сейчас).*$', '', city, flags=re.IGNORECASE)
+                    return city
+            
+            # Try to get location from h1 or h2 headers
+            for header_tag in ['h1', 'h2']:
+                header = soup.find(header_tag)
+                if header:
+                    header_text = header.get_text()
+                    # Look for city name in header
+                    location_match = re.search(r'в\s+([А-Яа-яё\s\-]+)', header_text)
+                    if location_match:
+                        city = location_match.group(1).strip()
+                        # Clean up
+                        city = re.sub(r'\s+(сегодня|сейчас).*$', '', city, flags=re.IGNORECASE)
+                        return city
+            
+            # Try to extract from URL
+            if 'russia' in self.url:
+                url_parts = self.url.split('/')
+                for part in url_parts:
+                    if '-russia-' in part or '-krasnodarskiy-' in part:
+                        city_part = part.split('-')[0]
+                        if city_part and len(city_part) > 2:
+                            return city_part.replace('-', ' ').title()
+            
+            # Fallback - try to find city name in text
+            city_patterns = [
+                r'([А-Яа-яё]+),\s*Россия',
+                r'в\s+городе\s+([А-Яа-яё]+)',
+                r'Температура\s+воды\s+в\s+([А-Яа-яё\s]+?)\s+составляет'
+            ]
+            
+            for pattern in city_patterns:
+                match = re.search(pattern, text_content)
+                if match:
+                    city = match.group(1).strip()
+                    # Clean up common suffixes
+                    city = re.sub(r'\s+(в\s+.*|сегодня|сейчас).*$', '', city, flags=re.IGNORECASE)
+                    return city
+            
+            return "Неизвестное местоположение"
+            
+        except Exception as e:
+            _LOGGER.error("Error extracting location: %s", e)
+            return "Неизвестное местоположение" 

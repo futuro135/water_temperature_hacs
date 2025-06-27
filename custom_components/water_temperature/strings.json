@@ -2,15 +2,18 @@
   "config": {
     "step": {
       "user": {
-        "title": "Water Temperature Uglich",
-        "description": "Configure the Water Temperature Uglich integration",
+        "title": "Water Temperature",
+        "description": "Configure the Water Temperature integration for any city",
         "data": {
+          "city_url": "City URL from seatemperature.ru",
+          "city_name": "City name",
           "update_interval": "Update interval (minutes)"
         }
       }
     },
     "error": {
       "cannot_connect": "Failed to connect to the water temperature service",
+      "invalid_url": "Invalid URL. Please use a valid seatemperature.ru URL",
       "invalid_auth": "Invalid authentication",
       "unknown": "Unexpected error occurred"
     },

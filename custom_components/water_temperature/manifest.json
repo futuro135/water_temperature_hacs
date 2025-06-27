@@ -1,11 +1,11 @@
 {
   "domain": "water_temperature",
-  "name": "Water Temperature Uglich",
-  "version": "1.0.0",
-  "documentation": "https://github.com/yourusername/water-temperature-hacs",
-  "issue_tracker": "https://github.com/yourusername/water-temperature-hacs/issues",
+  "name": "Water Temperature",
+  "version": "1.1.0",
+  "documentation": "https://github.com/futuro135/water_temperature_hacs",
+  "issue_tracker": "https://github.com/futuro135/water_temperature_hacs/issues",
   "dependencies": [],
-  "codeowners": ["@yourusername"],
+  "codeowners": ["@futuro135"],
   "requirements": [
     "aiohttp>=3.8.0",
     "beautifulsoup4>=4.9.3"

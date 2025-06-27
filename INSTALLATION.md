@@ -8,7 +8,7 @@
 2. Склонируйте его локально:
 ```bash
 git clone https://github.com/futuro135/water_temperature_hacs.git
-cd water-temperature-hacs
+cd water_temperature_hacs
 ```
 
 ### 2. Загрузка файлов
@@ -16,7 +16,7 @@ cd water-temperature-hacs
 Скопируйте все файлы из папки `water_temperature_hacs` в корень вашего репозитория:
 
 ```
-water-temperature-hacs/
+water_temperature_hacs/
 ├── custom_components/
 │   └── water_temperature/
 │       ├── __init__.py
@@ -40,9 +40,9 @@ water-temperature-hacs/
 **manifest.json**:
 ```json
 {
-  "documentation": "https://github.com/futuro135/water_temperature_hacs",
-  "issue_tracker": "https://github.com/futuro135/water_temperature_hacs/issues",
-  "codeowners": ["@futuro135"]
+  "documentation": "https://github.com/yourusername/water-temperature-hacs",
+  "issue_tracker": "https://github.com/yourusername/water-temperature-hacs/issues",
+  "codeowners": ["@yourusername"]
 }
 ```
 
@@ -63,7 +63,7 @@ git push origin main
 1. Перейдите в ваш репозиторий на GitHub
 2. Нажмите "Releases" → "Create a new release"
 3. Тег версии: `v1.0.0`
-4. Название релиза: `Water Temperature Uglich v1.0.0`
+4. Название релиза: `Water Temperature v1.0.0`
 5. Описание: краткое описание функций
 6. Нажмите "Publish release"
 
@@ -80,14 +80,14 @@ git push origin main
    - Нажмите Add
 
 2. **Установка**:
-   - Найдите "Water Temperature Uglich" в списке
+   - Найдите "Water Temperature" в списке
    - Нажмите Install
    - Перезапустите Home Assistant
 
 3. **Настройка**:
    - Settings → Devices & Services
    - Add Integration
-   - Найдите "Water Temperature Uglich"
+   - Найдите "Water Temperature"
    - Настройте интервал обновления
 
 ## 🧪 Тестирование

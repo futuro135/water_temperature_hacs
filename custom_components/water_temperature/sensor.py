@@ -41,9 +41,7 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the sensor platform."""
-    update_interval = config_entry.data.get(CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL)
-    
-    coordinator = WaterTemperatureCoordinator(hass, update_interval)
+    coordinator = WaterTemperatureCoordinator(hass, config_entry.data)
     await coordinator.async_config_entry_first_refresh()
     
     async_add_entities([WaterTemperatureSensor(coordinator, config_entry)], True)
@@ -52,9 +50,13 @@ async def async_setup_entry(
 class WaterTemperatureCoordinator(DataUpdateCoordinator):
     """Class to manage fetching water temperature data."""
 
-    def __init__(self, hass: HomeAssistant, update_interval: int) -> None:
+    def __init__(self, hass: HomeAssistant, config_data: dict) -> None:
         """Initialize the coordinator."""
-        self.parser = WaterTemperatureParser()
+        self.city_url = config_data.get("city_url")
+        self.city_name = config_data.get("city_name", "Unknown")
+        update_interval = config_data.get("update_interval", 30)
+        
+        self.parser = WaterTemperatureParser(self.city_url)
         
         super().__init__(
             hass,
@@ -85,8 +87,9 @@ class WaterTemperatureSensor(CoordinatorEntity, SensorEntity):
         """Initialize the sensor."""
         super().__init__(coordinator)
         self._config_entry = config_entry
-        self._attr_name = "Water Temperature Uglich"
-        self._attr_unique_id = f"{DOMAIN}_water_temperature"
+        self._city_name = coordinator.city_name
+        self._attr_name = f"Water Temperature {self._city_name}"
+        self._attr_unique_id = f"{DOMAIN}_{self._city_name.lower().replace(' ', '_')}"
         self._attr_device_class = SensorDeviceClass.TEMPERATURE
         self._attr_state_class = SensorStateClass.MEASUREMENT
         self._attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
@@ -96,11 +99,11 @@ class WaterTemperatureSensor(CoordinatorEntity, SensorEntity):
     def device_info(self) -> Dict[str, Any]:
         """Return device information."""
         return {
-            "identifiers": {(DOMAIN, "water_temperature_uglich")},
-            "name": NAME,
+            "identifiers": {(DOMAIN, f"water_temperature_{self._city_name.lower().replace(' ', '_')}")},
+            "name": f"{NAME} - {self._city_name}",
             "manufacturer": "Custom",
             "model": "Water Temperature Parser",
-            "sw_version": "1.0.0",
+            "sw_version": "1.1.0",
         }
 
     @property

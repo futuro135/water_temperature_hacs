@@ -1,24 +1,26 @@
-# Water Temperature Uglich - Home Assistant Integration
+# Water Temperature - Home Assistant Integration
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 [![GitHub release](https://img.shields.io/github/release/futuro135/water_temperature_hacs.svg)](https://github.com/futuro135/water_temperature_hacs/releases)
 [![License](https://img.shields.io/github/license/futuro135/water_temperature_hacs.svg)](LICENSE)
 
-Интеграция для Home Assistant, которая получает актуальную температуру воды в Угличе с сайта [seatemperature.ru](https://seatemperature.ru/current/russia/uglich-russia-sea-temperature).
+Универсальная интеграция для Home Assistant, которая получает актуальную температуру воды для любого города с сайта [seatemperature.ru](https://seatemperature.ru). Поддерживает все города России и мира, представленные на сайте.
 
 ## Возможности
 
-- 🌡️ **Текущая температура воды** - основной сенсор с температурой воды в Угличе
+- 🌍 **Поддержка любого города** - настройка через URL с сайта seatemperature.ru
+- 🌡️ **Текущая температура воды** - основной сенсор с температурой воды
 - 📊 **Дополнительные атрибуты**:
   - Температура воды вчера
   - Температура воды неделю назад
   - Тенденция изменения температуры
   - Температура воздуха
   - Время последнего обновления данных
-  - Местоположение
+  - Автоматическое определение местоположения
 - ⚙️ **Настраиваемый интервал обновления** (от 5 до 1440 минут)
 - 🔄 **Асинхронное обновление данных**
 - 🎯 **Полная интеграция с Home Assistant**
+- 🏷️ **Автоматическое именование сенсоров** по названию города
 
 ## Установка через HACS
 
@@ -42,22 +44,41 @@
 
 1. Перейдите в Settings → Devices & Services
 2. Нажмите "Add Integration"
-3. Найдите "Water Temperature Uglich"
-4. Настройте интервал обновления (по умолчанию 30 минут)
+3. Найдите "Water Temperature"
+4. Заполните настройки:
+   - **City URL**: URL страницы города с сайта seatemperature.ru (например: `https://seatemperature.ru/current/russia/uglich-russia-sea-temperature`)
+   - **City Name**: Название города (например: "Углич")
+   - **Update interval**: Интервал обновления в минутах (по умолчанию 30)
 5. Нажмите "Submit"
+
+### Как найти URL города
+
+1. Перейдите на [seatemperature.ru](https://seatemperature.ru)
+2. Найдите ваш город через поиск или карту
+3. Скопируйте URL страницы города
+4. Вставьте его в поле "City URL" при настройке интеграции
+
+**Примеры URL:**
+- Углич: `https://seatemperature.ru/current/russia/uglich-russia-sea-temperature`
+- Сочи: `https://seatemperature.ru/current/russia/sochi-krasnodarskiy-russia-sea-temperature`
+- Анапа: `https://seatemperature.ru/current/russia/anapa-krasnodarskiy-russia-sea-temperature`
+
+📋 **Больше примеров URL**: См. файл [CITIES_EXAMPLES.md](CITIES_EXAMPLES.md) для полного списка популярных городов России и мира.
+
+📝 **История изменений**: См. файл [CHANGELOG.md](CHANGELOG.md) для подробной информации о всех обновлениях.
 
 ## Использование
 
 После установки и настройки в Home Assistant появится сенсор:
 
-- **Сенсор**: `sensor.water_temperature_uglich`
+- **Сенсор**: `sensor.water_temperature_[город]` (например: `sensor.water_temperature_углич`)
 - **Атрибуты**:
   - `yesterday_temperature` - температура вчера
   - `week_ago_temperature` - температура неделю назад
   - `trend` - тенденция изменения
   - `air_temperature` - температура воздуха
   - `last_updated` - время последнего обновления
-  - `location` - местоположение
+  - `location` - автоматически определенное местоположение
 
 ### Пример использования в автоматизации
 
@@ -66,39 +87,39 @@ automation:
   - alias: "Уведомление о температуре воды"
     trigger:
       - platform: numeric_state
-        entity_id: sensor.water_temperature_uglich
+        entity_id: sensor.water_temperature_углич  # замените на ваш город
         above: 20
     action:
       - service: notify.mobile_app_your_phone
         data:
-          message: "Температура воды в Угличе поднялась выше 20°C: {{ states('sensor.water_temperature_uglich') }}°C"
+          message: "Температура воды поднялась выше 20°C: {{ states('sensor.water_temperature_углич') }}°C"
 ```
 
 ### Пример карточки в Lovelace
 
 ```yaml
 type: entities
-title: Температура воды в Угличе
+title: Температура воды  # название будет автоматически подставлено
 entities:
-  - entity: sensor.water_temperature_uglich
+  - entity: sensor.water_temperature_углич  # замените на ваш город
     name: Текущая температура
     icon: mdi:thermometer-water
   - type: attribute
-    entity: sensor.water_temperature_uglich
+    entity: sensor.water_temperature_углич
     attribute: yesterday_temperature
     name: Вчера
     suffix: "°C"
   - type: attribute
-    entity: sensor.water_temperature_uglich
+    entity: sensor.water_temperature_углич
     attribute: week_ago_temperature
     name: Неделю назад
     suffix: "°C"
   - type: attribute
-    entity: sensor.water_temperature_uglich
+    entity: sensor.water_temperature_углич
     attribute: trend
     name: Тенденция
   - type: attribute
-    entity: sensor.water_temperature_uglich
+    entity: sensor.water_temperature_углич
     attribute: air_temperature
     name: Температура воздуха
     suffix: "°C"
