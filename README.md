@@ -1,8 +1,8 @@
 # Water Temperature Uglich - Home Assistant Integration
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
-[![GitHub release](https://img.shields.io/github/release/yourusername/water-temperature-hacs.svg)](https://github.com/yourusername/water-temperature-hacs/releases)
-[![License](https://img.shields.io/github/license/yourusername/water-temperature-hacs.svg)](LICENSE)
+[![GitHub release](https://img.shields.io/github/release/futuro135/water_temperature_hacs.svg)](https://github.com/futuro135/water_temperature_hacs/releases)
+[![License](https://img.shields.io/github/license/futuro135/water_temperature_hacs.svg)](LICENSE)
 
 Интеграция для Home Assistant, которая получает актуальную температуру воды в Угличе с сайта [seatemperature.ru](https://seatemperature.ru/current/russia/uglich-russia-sea-temperature).
 
@@ -27,7 +27,7 @@
 1. Убедитесь, что у вас установлен [HACS](https://hacs.xyz/)
 2. Перейдите в HACS → Integrations
 3. Нажмите на три точки в правом верхнем углу → Custom repositories
-4. Добавьте URL этого репозитория: `https://github.com/yourusername/water-temperature-hacs`
+4. Добавьте URL этого репозитория: `https://github.com/futuro135/water_temperature_hacs`
 5. Выберите категорию "Integration"
 6. Найдите "Water Temperature Uglich" в списке и установите
 7. Перезапустите Home Assistant
@@ -106,7 +106,7 @@ entities:
 
 ## Поддержка
 
-Если у вас возникли проблемы или есть предложения по улучшению, создайте [issue](https://github.com/yourusername/water-temperature-hacs/issues) в этом репозитории.
+Если у вас возникли проблемы или есть предложения по улучшению, создайте [issue](https://github.com/futuro135/water_temperature_hacs/issues) в этом репозитории.
 
 ## Лицензия
 

@@ -7,7 +7,7 @@
 1. Создайте новый репозиторий на GitHub с именем `water-temperature-hacs`
 2. Склонируйте его локально:
 ```bash
-git clone https://github.com/yourusername/water-temperature-hacs.git
+git clone https://github.com/futuro135/water_temperature_hacs.git
 cd water-temperature-hacs
 ```
 
@@ -40,9 +40,9 @@ water-temperature-hacs/
 **manifest.json**:
 ```json
 {
-  "documentation": "https://github.com/yourusername/water-temperature-hacs",
-  "issue_tracker": "https://github.com/yourusername/water-temperature-hacs/issues",
-  "codeowners": ["@yourusername"]
+  "documentation": "https://github.com/futuro135/water_temperature_hacs",
+  "issue_tracker": "https://github.com/futuro135/water_temperature_hacs/issues",
+  "codeowners": ["@futuro135"]
 }
 ```
 
@@ -75,7 +75,7 @@ git push origin main
    - Откройте HACS в Home Assistant
    - Перейдите в Integrations
    - Нажмите три точки → Custom repositories
-   - URL: `https://github.com/yourusername/water-temperature-hacs`
+   - URL: `https://github.com/futuro135/water_temperature_hacs`
    - Category: Integration
    - Нажмите Add
 
